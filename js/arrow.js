@@ -1,3 +1,5 @@
+var util = require('./util.js');
+
 function Arrow() {
 	this.pos = {
 		x: 0,
@@ -46,14 +48,17 @@ Arrow.prototype.setPos = function(pos) {
 };
 Arrow.prototype.addMouseMove = function(ctx) {
 	var arrow = this;
-	document.addEventListener('mousemove',function (event) {
-		arrow.target.x = event.layerX || event.offsetX;
-		arrow.target.y = event.layerY || event.offsetY;
-		var dx = arrow.target.x - arrow.x;
-		var dy = arrow.target.y - arrow.y;
-		arrow.direction = Math.atan2(dy,dx) + Math.PI/2;
+	arrow.mouseMove = function (event) {
+		arrow.target = util.getMousePos(event);
+		arrow.direction = util.includeAngle(arrow.x, arrow.y, arrow.target.x, arrow.target.y);
 		arrow.draw(ctx);
-	})
+	};
+	document.addEventListener('mousemove',arrow.mouseMove);
+};
+Arrow.prototype.removeMouseMove = function() {
+	if(this.mouseMove){
+		document.removeEventListener('mousemove', this.mouseMove);
+	}
 };
 
 module.exports = Arrow;

@@ -39,4 +39,8 @@ Util.prototype.getGreen = function (rgb) {
 Util.prototype.getBlue = function (rgb) {
 	return parseInt(rgb.split(',')[2].split(')')[0]);
 }
+Util.prototype.checkCircleCollision = function (x1, y1, r1, x2, y2, r2) {
+	d = this.distance(x1,y1,x2,y2);
+	return d <= r2+r1;
+}
 module.exports = new Util();
