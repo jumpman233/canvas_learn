@@ -1,15 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>auto follow arrow</title>
+	<title>h5 canvas</title>
+	<style type="text/css">
+		button{
+			background-color: #0099CC;
+			border: 1px solid #0099CC;
+			color: white;
+			padding: 5px;
+			margin-right: 5px;
+			outline: none;
+		}
+		button:focus{
+			background-color: #CCFFFF;
+			border: 1px solid #CCFFFF;
+			color: #0099CC;
+			cursor: pointer;
+		}
+		button:hover{
+			background-color: #CCFFFF;
+			border: 1px solid #CCFFFF;
+			color: #0099CC;
+			cursor: pointer;
+		}
+		button:active{
+			background-color: #CCFFFF;
+			border: 1px solid #CCFFFF;
+			color: #0099CC;
+			cursor: pointer;
+		}
+		
+		#button-div{
+			margin-bottom: 20px;
+		}
+	</style>
 </head>
-<body>
-	<button id='arrow'>arrow</button>
-	<button id='sinBall'>sinBall</button>
-	<button id='phsics-ball'>phsics</button>
-	<button id='load-ball'>load-ball</button>
-	<button id='energy-momentum'>energy and momentum conservation laws</button>
-	<button id='easing-animation'>easing animation</button>
+<body style="background-color: #666">
+	<div id = "button-div">
+		<button class="btn" id='arrow'>arrow</button>
+		<button id='sinBall'>sinBall</button>
+		<button id='phsics-ball'>phsics</button>
+		<button id='load-ball'>load-ball</button>
+		<button id='energy-momentum'>energy and momentum conservation laws</button>
+		<button id='easing-animation'>easing-animation</button>
+		<button id='spring-animation'>spring-animation</button>
+	</div>
 	<canvas id="ca" style="background-color: #444"></canvas>
 	<script type="text/javascript" src="dist/bundle.js"></script>
 </body>

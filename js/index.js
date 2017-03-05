@@ -263,7 +263,7 @@ document.getElementById('energy-momentum').onclick = function () {
 	p1.x = cm.width/2-100;
 	p1.y = cm.height/2 + 50;
 	p1.vy = 3;
-	p1.vx = 10;
+	p1.vx = 30;
 	p1.loss = 1;
 	p2.color = '#99CCCC';
 	p2.radius = 70;
@@ -312,4 +312,81 @@ document.getElementById('easing-animation').onclick = function () {
 	interval.removeList.push(function () {
 		window.clearInterval(inter);
 	})
+}
+
+document.getElementById('spring-animation').onclick = function () {
+	interval.remove();
+	var balls = [];
+	for(var i = 0; i < 3; i++){
+		balls.push(new Particle({radius: 10, color: '#CCFFFF', loss: 1}));
+	}
+	var core = new Particle({radius: 20, color: '#0099CC', loss: 1, f: 0.95});
+	balls[0].x = cm.width / 2 - 100;
+	balls[0].y = cm.height / 2 - 100;
+	balls[1].x = cm.width / 2 - 100;
+	balls[1].y = cm.height / 2 + 100;
+	balls[2].x = cm.width / 2 + 100;
+	balls[2].y = cm.height / 2 - 100;
+	core.x = cm.width / 2 + 50;
+	core.y = cm.height / 2 + 50;
+	var clickBall = null,
+		spring = 0.02,
+		f = 0.95;
+
+	var drawLines = function () {
+		balls.forEach(function (ball) {
+			util.drawLine(ball.x, ball.y, core.x, core.y, context, 2, '#CCCC99');
+		})
+	}
+	var mouseDown = function (event) {
+		var pos = util.getMousePos(event);
+		balls.forEach(function (ball) {
+			if(ball.isIn(pos.x, pos.y)){
+				clickBall = ball;
+				context.canvas.addEventListener('mousemove', mouseMove);
+				context.canvas.addEventListener('mouseup', mouseUp);
+			}
+		})
+	}
+	var mouseMove = function (event) {
+		var pos = util.getMousePos(event);
+		clickBall.x = pos.x;
+		clickBall.y = pos.y;
+	}
+	var mouseUp = function () {
+		context.canvas.removeEventListener('mousemove', mouseMove);
+		context.canvas.removeEventListener('mouseup', mouseUp);
+	}
+
+	var handle = function (ball) {
+		var dx = ball.x - core.x,
+			dy = ball.y - core.y;
+		var ax = dx * spring,
+			ay = dy * spring;
+		core.ax += ax;
+		core.ay += ay;
+	}
+	var draw = function () {
+		context.clearRect(0, 0, cm.width, cm.height);
+
+		core.ax = 0;
+		core.ay = 0;
+		balls.forEach(handle);
+
+
+		drawLines();
+		balls[0].draw(context);
+		balls[1].draw(context);
+		balls[2].draw(context);
+		core.draw(context);
+	}
+	context.canvas.addEventListener('mousedown', mouseDown);
+
+	var inter = window.setInterval(draw, 40);
+
+
+	interval.removeList.push(function () {
+		window.clearInterval(inter);
+		context.canvas.removeEventListener('mousedown', mouseDown);
+	});
 }

@@ -43,4 +43,15 @@ Util.prototype.checkCircleCollision = function (x1, y1, r1, x2, y2, r2) {
 	d = this.distance(x1,y1,x2,y2);
 	return d <= r2+r1;
 }
+Util.prototype.drawLine = function (x1, y1, x2, y2, context, width, color) {
+	context.save();
+	context.lineWidth = width ? width : 2;
+	context.strokeStyle = color;
+	context.beginPath();
+	context.moveTo(x1, y1);
+	context.lineTo(x2, y2);
+	context.closePath();
+	context.stroke();
+	context.restore();
+}
 module.exports = new Util();

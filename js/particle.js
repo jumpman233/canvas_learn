@@ -14,10 +14,20 @@ function Partical(params) {
 	this.ax = 0;
 	this.ay = 0;
 	this.loss = 0.8;
+	this.f = 1;
 
 	if(params){
 		if(params.radius>0){
 			this.radius = params.radius;
+		}
+		if(params.color){
+			this.color = params.color;
+		}
+		if(params.loss){
+			this.loss = params.loss;
+		}
+		if(params.f){
+			this.f = params.f;
 		}
 	}
 }
@@ -43,6 +53,8 @@ Partical.prototype.move = function () {
 	var partical = this;
 	partical.vx += partical.ax;
 	partical.vy += partical.ay;
+	partical.vx *= partical.f;
+	partical.vy *= partical.f;
 	partical.x += partical.vx;
 	partical.y += partical.vy;
 };
@@ -107,4 +119,7 @@ Partical.prototype.checkCollideBoundary = function(ctx) {
 		partical.direction += 360;
 	}
 };
+Partical.prototype.isIn = function (x, y) {
+	return util.distance(x, y, this.x, this.y) < this.radius;
+}
 module.exports = Partical;

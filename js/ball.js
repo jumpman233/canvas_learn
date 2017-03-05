@@ -1,3 +1,5 @@
+var util = require('./util.js')
+
 function Ball(params) {
 	this.radius = 40;
 	this.color = 'rgba(255,255,255,1)';
@@ -34,6 +36,9 @@ Ball.prototype.draw = function(ctx) {
 	ctx.stroke();
 	ctx.restore();
 };
+Ball.prototype.isIn = function (x, y) {
+	return util.distance(x, y, this.x, this.y) < this.radius;
+}
 
 
 
