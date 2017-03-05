@@ -1,10 +1,10 @@
-
 function Ball(params) {
 	this.radius = 40;
 	this.color = 'rgba(255,255,255,1)';
 	this.rotate = 0;
 	this.x = 0;
 	this.y = 0;
+	this.mass = 1;
 	this.scaleX = 1;
 	this.scaleY = 1;
 	this.lineWidth = 1;
@@ -34,5 +34,7 @@ Ball.prototype.draw = function(ctx) {
 	ctx.stroke();
 	ctx.restore();
 };
+
+
 
 module.exports = Ball;

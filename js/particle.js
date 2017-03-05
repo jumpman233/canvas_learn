@@ -1,9 +1,12 @@
+var util = require('./util.js');
+
 function Partical(params) {
 	this.speed = 0;
 	this.direction = 0;
 	this.accSpeed = 0;
 	this.radius = 20;
 	this.color = 'rgb(255,0,0)';
+	this.mass = 1;
 	this.x = 0;
 	this.y = 0;
 	this.vx = 0;
@@ -43,8 +46,27 @@ Partical.prototype.move = function () {
 	partical.x += partical.vx;
 	partical.y += partical.vy;
 };
-Partical.prototype.checkCollideParticle = function (p2) {
-	
+Partical.prototype.collide = function (p_2) {
+	var p_1 = this;
+		v1_x = p_1.vx,
+		v2_x = p_2.vx,
+		v1_y = p_1.vy,
+		v2_y = p_2.vy;
+	if(p_2 && p_2.radius>0 && p_2.x !== null && p_2.y !== null){
+		var dis = util.distance(p_1.x, p_1.y, p_2.x, p_2.y);
+		if(dis <= p_2.radius + p_1.radius){
+			p_1.vx = ((p_1.mass - p_2.mass) * v1_x + 2 * p_2.mass * v2_x ) /
+					 (p_2.mass + p_1.mass);
+			p_2.vx = ((p_2.mass - p_1.mass) * v2_x + 2 * p_1.mass * v1_x ) /
+					 (p_2.mass + p_1.mass);
+		    p_1.vy = ((p_1.mass - p_2.mass) * v1_y + 2 * p_2.mass * v2_y ) /
+					 (p_2.mass + p_1.mass);
+			p_2.vy = ((p_2.mass - p_1.mass) * v2_y + 2 * p_1.mass * v1_y ) /
+					 (p_2.mass + p_1.mass);
+			return true;
+		}
+	}
+	return false;
 };
 Partical.prototype.checkCollideBoundary = function(ctx) {
 	var partical = this;

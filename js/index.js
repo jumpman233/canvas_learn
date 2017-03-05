@@ -1,4 +1,4 @@
-
+"use strict";
 var basic = require('./graphicBasic.js')
 var CanvasManager = require('./canvasManager.js');
 var Arrow = require('./arrow.js');
@@ -211,15 +211,14 @@ document.getElementById('phsics-ball').onclick = function () {
 	});
 }
 
-console.log(document.getElementById('load-ball'))
 document.getElementById('load-ball').onclick = function () {
 	interval.remove();
 	var b1 = new Ball({
-		radius: 4,
+		radius: 10,
 		color: '#7FFFD4'
 	});
 	var b2 = new Ball({
-		radius: 16,
+		radius: 10,
 		color: '#7FFFD4'
 	});
 	b1.x = cm.width/2;
@@ -229,24 +228,88 @@ document.getElementById('load-ball').onclick = function () {
 	var ang = 0,
 		dx = 0,
 		dr = 0,
-		dg = 0.1;
+		dg = 0.1,
+		b1_x = cm.width/2,
+		b2_x = cm.width/2;
 
-	b1.x -= Math.sin(Math.PI/2) * 200;
-	b2.x += Math.sin(Math.PI/2) * 200;
 	var draw = function () {
 		context.clearRect(0,0,cm.width,cm.height);
-		dx = Math.sin(ang) * 200;
-		dr = Math.sin(ang) * 3;
+		dx = Math.sin(ang) * 70;
+		dr = Math.cos(ang) * 3;
 		b1.radius = 6+dr;
 		b2.radius = 6-dr;
 		ang += dg;
-		b1.x = cm.width/2 + dx;
-		b2.x = cm.width/2 - dx;
+		b1.x = b1_x + dx;
+		b2.x = b2_x - dx;
 
 		b1.draw(context);
 		b2.draw(context);
 	}
-	window.setInterval(function () {
+	var inter = window.setInterval(function () {
 		draw();
-	}, 40);
+	}, 20);
+	interval.removeList.push(function () {
+		window.clearInterval(inter);
+	});
+}
+
+document.getElementById('energy-momentum').onclick = function () {
+	interval.remove();
+	var p1 = new Particle();
+	var p2 = new Particle();
+	p1.color = '#CCFFFF';
+	p1.radius = 30;
+	p1.mass = 10;
+	p1.x = cm.width/2-100;
+	p1.y = cm.height/2 + 50;
+	p1.vy = 3;
+	p1.vx = 10;
+	p1.loss = 1;
+	p2.color = '#99CCCC';
+	p2.radius = 70;
+	p2.mass = 20;
+	p2.loss = 1;
+	p2.x = cm.width/2+100;
+	p2.y = cm.height/2;
+
+	var draw = function () {
+		context.clearRect(0, 0, cm.width, cm.height);
+		p1.collide(p2);
+		p1.draw(context);
+		p2.draw(context);
+	}
+
+	var inter = window.setInterval(draw,30);
+	interval.removeList.push(function () {
+		window.clearInterval(inter);
+	})
+}
+
+document.getElementById('easing-animation').onclick = function () {
+	interval.remove();
+	var ball = new Ball();
+	ball.radius = 10;
+	ball.color = '#CCFFFF';
+	ball.x = cm.width/2;
+	ball.y = cm.height/2;
+	var dd = 0,
+		easing = 0.1,
+		pos = {x: cm.width / 2, y: cm.height / 2},
+		ang = 0;
+
+	var draw = function () {
+		context.clearRect(0, 0, cm.width, cm.height);
+		ball.draw(context);
+		dd = util.distance(ball.x, ball.y, pos.x, pos.y);
+		ang = util.includeAngle(ball.x, ball.y, pos.x, pos.y);
+		ball.x += dd * Math.sin(ang) * easing;
+		ball.y -= dd * Math.cos(ang) * easing;
+	}
+	context.canvas.addEventListener('mousemove', function (e) {
+		pos = util.getMousePos(e);
+	})
+	var inter = window.setInterval(draw,20);
+	interval.removeList.push(function () {
+		window.clearInterval(inter);
+	})
 }
