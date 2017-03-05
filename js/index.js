@@ -226,24 +226,19 @@ document.getElementById('load-ball').onclick = function () {
 	b1.y = cm.height/2;
 	b2.x = cm.width/2;
 	b2.y = cm.height/2;
-	var ang = 0;
-	var dx = 0,
+	var ang = 0,
+		dx = 0,
 		dr = 0,
-		px = 0,
 		dg = 0.1;
 
-	for(var i = 0;i<=Math.PI;i += dg){
-		px += (Math.sin(i) * 4);
-	}
-	// b1.x -= px;
-	// b2.x += px;
-	var f = 1;
+	b1.x -= Math.sin(Math.PI/2) * 200;
+	b2.x += Math.sin(Math.PI/2) * 200;
 	var draw = function () {
 		context.clearRect(0,0,cm.width,cm.height);
 		dx = Math.sin(ang) * 200;
 		dr = Math.sin(ang) * 3;
 		b1.radius = 6+dr;
-		b2.radius = 12-dr;
+		b2.radius = 6-dr;
 		ang += dg;
 		b1.x = cm.width/2 + dx;
 		b2.x = cm.width/2 - dx;
